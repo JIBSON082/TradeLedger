@@ -515,3 +515,21 @@ const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelecto
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v)),lerp=(a,b,t)=>a+(b-a)*t;
+  el.addEventListener('scroll',()=>{if(!tk){tk=true;requestAnimationFrame(near)}},{passive:true});
+  const pause=ms=>{paused=true;c.classList.add('hold');clearTimeout(hold);hold=setTimeout(()=>{paused=false;c.classList.remove('hold')},ms)};
+  ['pointerdown','touchstart','wheel'].forEach(ev=>el.addEventListener(ev,()=>pause(7000),{passive:true}));
+  el.addEventListener('mouseenter',()=>{paused=true;c.classList.add('hold');clearTimeout(hold)});el.addEventListener('mouseleave',()=>pause(1500));
+  pb.onclick=()=>{pause(7000);goTo((cur-1+kids.length)%kids.length,true)};nb.onclick=()=>{pause(7000);goTo((cur+1)%kids.length,true)};
+  dots.forEach((d,i)=>d.onclick=()=>{pause(7000);goTo(i,true)});
+  new IntersectionObserver(es=>{inView=es[0].isIntersecting},{threshold:.4}).observe(el);
+  if(!reduce)setInterval(()=>{if(inView&&!paused&&!document.hidden)goTo((cur+1)%kids.length,true)},4200);
+  const init=()=>{pad();goTo(Math.max(cur,0),false);near()};addEventListener('resize',()=>{pad();goTo(Math.max(cur,0),false)});
+  requestAnimationFrame(()=>requestAnimationFrame(init));setTimeout(init,600)})})();
+ /* ===== reveals ===== */
+ $$('[data-split]').forEach(split);
+ $$('.rv,.split,.race,.pnlc').forEach(e=>io.observe(e));
+
+ if(reduce)$$('.rv').forEach(e=>e.classList.add('in'));
+ })();
+</script>
+</body></html>
